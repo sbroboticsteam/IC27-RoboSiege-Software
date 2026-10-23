@@ -1,0 +1,74 @@
+/* grid tutorial: https://www.w3schools.com/css/css_grid.asp */
+:root {
+    --bg: #14161a;
+    --panel: #20242b;
+    --ring: #3a404b;
+    --stick: #e8eaee;
+    --text: #c9ced6;
+    --ok: #3ccf7a;
+    --bad: #e5484d;
+    --wait: #e5a83c;
+}
+
+* { box-sizing: border-box; }
+
+html, body {
+    margin: 0;
+    height: 100%;
+    background: var(--bg);
+    color: var(--text);
+    font-family: system-ui, -apple-system, sans-serif;
+    /* stop the page from scrolling / zooming while you drive */
+    overscroll-behavior: none;
+    user-select: none;
+    -webkit-user-select: none;
+    -webkit-touch-callout: none;
+}
+
+.grid-container {
+    display: grid;
+    grid-template-rows: auto 1fr auto;
+    justify-items: center;
+    align-items: center;
+    height: 100%;
+    padding: 24px 16px;
+}
+
+.grid-item { display: flex; align-items: center; gap: 8px; }
+
+.status { font-size: 15px; }
+.dot {
+    width: 10px; height: 10px; border-radius: 50%;
+    background: var(--wait);
+}
+.status.connected .dot { background: var(--ok); }
+.status.disconnected .dot { background: var(--bad); }
+
+.joystick {
+    position: relative;
+    width: 200px;
+    height: 200px;
+    border-radius: 50%;
+    background: var(--panel);
+    border: 2px solid var(--ring);
+    touch-action: none;   /* required so touch drags aren't eaten by scrolling */
+    cursor: grab;
+}
+.joystick.active { cursor: grabbing; }
+
+.stick {
+    position: absolute;
+    width: 50px;
+    height: 50px;
+    left: 75px;   /* (200 - 50) / 2 = centered */
+    top: 75px;
+    border-radius: 50%;
+    background: var(--stick);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.5);
+    pointer-events: none;
+    will-change: transform;
+}
+.joystick:not(.active) .stick { transition: transform 0.12s ease-out; }
+
+.readout { gap: 24px; font-variant-numeric: tabular-nums; font-size: 14px; }
+.readout b { color: var(--stick); font-weight: 600; }
